@@ -1,0 +1,56 @@
+<!-- Table with data source bound to Angular's 'dataSource' -->
+<table mat-table [dataSource]="dataSource">
+
+  <!-- ID column definition with data binding to 'id' field -->
+  <mat-text-column name="id"></mat-text-column>
+  
+  <!-- Name column definition with data binding to 'name' field -->
+  <mat-text-column name="name"></mat-text-column>
+  
+  <!-- Category column definition with data binding to 'category' field -->
+  <mat-text-column name="category"></mat-text-column>
+
+  <!-- Custom column for Price with Angular currency pipe for formatting -->
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef>Price</th>
+    <td mat-cell *matCellDef="let item">{{ item.price | currency: "USD" }}</td>
+  </ng-container>
+
+  <!-- Custom column for Time with data binding to 'timeFrame' field -->
+  <ng-container matColumnDef="timeFrame">
+    <th mat-header-cell *matHeaderCellDef>Time</th>
+    <td mat-cell *matCellDef="let item">{{ item.timeFrame }}</td>
+  </ng-container>
+
+  <!-- Actions column containing buttons for each product -->
+  <ng-container matColumnDef="buttons">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let p">
+      <!-- Delete button with Angular click event binding to call 'deleteProduct' method -->
+      <button mat-flat-button color="accent" (click)="deleteProduct(p.id)">
+        Delete
+      </button>
+
+      <!-- Edit button with routerLink directive to navigate to edit page for the selected product -->
+      <button mat-flat-button color="warn" [routerLink]="['/admin/main/products/edit', p.id]">
+        Edit
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header and row configurations for displaying data in table -->
+  <tr mat-header-row *matHeaderRowDef="colsAndRows"></tr>
+  <tr mat-row *matRowDef="let row; columns: colsAndRows"></tr>
+
+</table>
+
+<!-- Container at the bottom for 'Create New Product' button and paginator -->
+<div class="bottom-box">
+  <!-- Create button with routerLink directive to navigate to product creation page -->
+  <button mat-flat-button color="primary" routerLink="/admin/main/products/create">
+    Create New Product
+  </button>
+  
+  <!-- Paginator component for managing page size and options -->
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+</div>

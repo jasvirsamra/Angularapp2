@@ -1,0 +1,81 @@
+<!-- Checkbox to toggle displaying shipped orders, with Angular's ngModel binding to 'includeShipped' -->
+<mat-checkbox [(ngModel)]="includeShipped">Display Shipped Orders</mat-checkbox>
+
+<!-- Main orders table with data source bound to Angular's 'dataSource' -->
+<table class="orders" mat-table [dataSource]="dataSource">
+
+  <!-- Name column definition -->
+  <mat-text-column name="name"></mat-text-column>
+  
+  <!-- Zip code column definition -->
+  <mat-text-column name="zip"></mat-text-column>
+
+  <!-- Container for displaying products in each order's cart -->
+  <ng-container matColumnDef="cart_p">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let order">
+      
+      <!-- Inner table to display individual products within the cart -->
+      <table mat-table [dataSource]="order.cart.lines">
+        
+        <!-- Product name column definition within cart -->
+        <ng-container matColumnDef="p">
+          <th mat-header-cell *matHeaderCellDef>Product</th>
+          <td mat-cell *matCellDef="let line">{{ line.product.name }}</td>
+        </ng-container>
+
+        <!-- Header and row configurations for cart products table -->
+        <tr mat-header-row *matHeaderRowDef="['p']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['p']"></tr>
+      </table>
+    </td>
+  </ng-container>
+
+  <!-- Container for displaying quantity of items in each order's cart -->
+  <ng-container matColumnDef="cart_q">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let order">
+      
+      <!-- Inner table to display quantity of each product within the cart -->
+      <table mat-table [dataSource]="order.cart.lines">
+        
+        <!-- Quantity column definition within cart -->
+        <ng-container matColumnDef="q">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let line">{{ line.quantity }}</td>
+        </ng-container>
+
+        <!-- Header and row configurations for cart quantity table -->
+        <tr mat-header-row *matHeaderRowDef="['q']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['q']"></tr>
+      </table>
+    </td>
+  </ng-container>
+
+  <!-- Actions column to hold buttons for each order -->
+  <ng-container matColumnDef="buttons">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let o">
+      
+      <!-- Angular binding on click event to call 'toggleShipped' method, dynamically setting button label -->
+      <button mat-flat-button color="primary" (click)="toggleShipped(o)">
+        {{ o.shipped ? "Unship" : "Ship" }}
+      </button>
+      
+      <!-- Angular binding on click event to call 'delete' method with order ID -->
+      <button mat-flat-button color="warn" (click)="delete(o.id)">
+        Delete
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header row and rows for displaying data in main orders table -->
+  <tr mat-header-row *matHeaderRowDef="colsAndRows"></tr>
+  <tr mat-row *matRowDef="let row; columns: colsAndRows"></tr>
+
+  <!-- No data row with colspan for empty data display -->
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell no-data" colspan="4">No orders to display</td>
+  </tr>
+
+</table>

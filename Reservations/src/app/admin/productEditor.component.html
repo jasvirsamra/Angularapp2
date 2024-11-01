@@ -1,0 +1,53 @@
+<!-- Heading for form, dynamically displays 'Edit' or 'Create' based on 'editing' flag -->
+<h3 class="heading">{{ editing ? "Edit" : "Create" }} Product</h3>
+
+<!-- Form submission triggers 'save' method -->
+<form (ngSubmit)="save()">
+
+  <!-- Display ID field only when editing a product, with Angular's ngModel binding to product ID and set as disabled -->
+  <mat-form-field *ngIf="editing">
+    <mat-label>ID</mat-label>
+    <input matInput name="id" [(ngModel)]="product.id" disabled />
+  </mat-form-field>
+
+  <!-- Name field with Angular's ngModel binding to 'product.name' -->
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput name="name" [(ngModel)]="product.name" />
+  </mat-form-field>
+
+  <!-- Category field with Angular's ngModel binding to 'product.category' -->
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <input matInput name="category" [(ngModel)]="product.category" />
+  </mat-form-field>
+
+  <!-- Description field with Angular's ngModel binding to 'product.description' -->
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input name="description" matInput [(ngModel)]="product.description" />
+  </mat-form-field>
+
+  <!-- Price field with Angular's ngModel binding to 'product.price' -->
+  <mat-form-field>
+    <mat-label>Price</mat-label>
+    <input matInput name="price" [(ngModel)]="product.price" />
+  </mat-form-field>
+
+  <!-- Time frame field with Angular's ngModel binding to 'product.timeFrame' -->
+  <mat-form-field>
+    <mat-label>Time</mat-label>
+    <input matInput name="timeFrame" [(ngModel)]="product.timeFrame" />
+  </mat-form-field>
+
+  <!-- Submit button with text dynamically changing based on 'editing' flag -->
+  <button type="submit" mat-flat-button color="primary">
+    {{ editing ? "Save" : "Create" }}
+  </button>
+
+  <!-- Reset button with a router link to navigate back to product list -->
+  <button type="reset" mat-stroked-button routerLink="/admin/main/products">
+    Cancel
+  </button>
+
+</form>
